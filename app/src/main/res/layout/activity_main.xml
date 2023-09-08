@@ -1,0 +1,46 @@
+<!-- res/layout/activity_main.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+>
+
+    <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+    />
+
+    <CheckBox
+            android:id="@+id/repeatCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/timePicker"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="Lặp lại"
+    />
+
+    <Button
+            android:id="@+id/setAlarmButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/repeatCheckBox"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="Đặt Báo Thức"
+    />
+    <EditText
+            android:id="@+id/selectedTimeEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setAlarmButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:hint="Giờ đã chọn"
+            android:inputType="none"
+            android:clickable="false"
+            android:focusable="false" />
+
+</RelativeLayout>
