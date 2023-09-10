@@ -35,35 +35,40 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setAlarm() {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val hour = timePicker.hour
+        val minute = timePicker.minute
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE, minute)
+        calendar.set(Calendar.SECOND, 0)
 
-        private fun setAlarm() {
-            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val hour = timePicker.hour
-            val minute = timePicker.minute
-            val calendar = Calendar.getInstance()
-            calendar.set(Calendar.HOUR_OF_DAY, hour)
-            calendar.set(Calendar.MINUTE, minute)
-            calendar.set(Calendar.SECOND, 0)
+        val intent = Intent(this, Receiver::class.java)
+        intent.putExtra("repeat", repeatCheckBox.isChecked)
 
-            val intent = Intent(this, Receiver::class.java)
-            intent.putExtra("repeat", repeatCheckBox.isChecked)
+        // Sử dụng requestCode duy nhất dựa trên thời gian hiện tại để tránh xung đột
+        val requestCode = System.currentTimeMillis().toInt()
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
-            val pendingIntent = PendingIntent.getBroadcast(
-                this,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
+        // Xác định khoảng thời gian giữa các lần báo thức (millis) - lặp lại hàng ngày
+        val intervalMillis = AlarmManager.INTERVAL_DAY
 
-            alarmManager.setExact(
-                AlarmManager.RTC_WAKEUP,
-                calendar.timeInMillis,
-                pendingIntent
-            )
+        // Đặt báo thức lặp lại hàng ngày
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            intervalMillis,
+            pendingIntent
+        )
 
-            // Hiển thị giờ đã chọn trên EditText
-            val formattedTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
-            selectedTimeEditText.setText(formattedTime)
-
+        // Hiển thị giờ đã chọn trên EditText
+        val formattedTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
+        selectedTimeEditText.setText(formattedTime)
     }
 }

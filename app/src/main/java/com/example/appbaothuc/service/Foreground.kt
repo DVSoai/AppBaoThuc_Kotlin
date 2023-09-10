@@ -10,7 +10,7 @@ import androidx.core.app.NotificationCompat
 import com.example.appbaothuc.R
 import com.example.appbaothuc.broadcast.Receiver
 
-class Foreground: Service() {
+class Foreground : Service() {
 
     private lateinit var mediaPlayer: MediaPlayer
     private val channelId = "my_channel"
@@ -22,13 +22,23 @@ class Foreground: Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
+
+
+
         if (intent?.action == "STOP_ALARM") {
+
+            // Hủy bỏ báo thức khi bạn muốn dừng dịch vụ
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(this, Receiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            alarmManager.cancel(pendingIntent)
+
             stopForeground(true)
             stopSelf()
             return START_NOT_STICKY
         }
 
-
+        //   kiểm tra intent và xử lý dựa trên thông tin trong intent ở đây nếu cần
 
         createNotificationChannel()
 
@@ -40,13 +50,11 @@ class Foreground: Service() {
         return START_STICKY
     }
 
-    override fun onBind(p0: Intent?): IBinder? {
+    override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
-
     override fun onDestroy() {
-
         mediaPlayer.stop()
         mediaPlayer.release()
         super.onDestroy()
@@ -56,7 +64,7 @@ class Foreground: Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "My  Channel",
+                "My Channel",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -93,9 +101,4 @@ class Foreground: Service() {
 
         return notification
     }
-
-
-
-
-
 }
