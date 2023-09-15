@@ -17,7 +17,7 @@ class Foreground : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        mediaPlayer = MediaPlayer.create(this, R.raw.mucsic)
+        mediaPlayer = MediaPlayer.create(this, R.raw.sena)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -101,4 +101,6 @@ class Foreground : Service() {
 
         return notification
     }
+
+
 }

@@ -46,6 +46,13 @@ class Receiver : BroadcastReceiver() {
                 intervalMillis,
                 pendingIntent
             )
+        } else {
+            val serviceIntent = Intent(context, Foreground::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent)
+            } else {
+                context.startService(serviceIntent)
+            }
         }
     }
 }
